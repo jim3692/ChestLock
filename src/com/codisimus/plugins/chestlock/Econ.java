@@ -16,7 +16,6 @@ public class Econ {
      * Charges a Player a given amount of money, which goes to a Player/Bank
      * 
      * @param player The name of the Player to be charged
-     * @param source The Player/Bank that will receive the money
      * @param amount The amount that will be charged
      * @return True if the transaction was successful
      */

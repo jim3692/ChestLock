@@ -283,7 +283,7 @@ public class ChestLock extends JavaPlugin {
                         Block block = world.getBlockAt(x, y, z);
 
                         //Skip this data if the Block is not a Chest
-                        if (block.getTypeId() != 54)
+                        if (block.getType() != Material.CHEST)
                             continue;
 
                         LinkedList<String> coOwners = new LinkedList<String>();
@@ -329,8 +329,8 @@ public class ChestLock extends JavaPlugin {
                         Block block = world.getBlockAt(x, y, z);
 
                         //Skip this data if the Block is not a Furnace
-                        int id = block.getTypeId();
-                        if (id != 61 && id != 62)
+                        Material id = block.getType();
+                        if (id != Material.FURNACE && id != Material.LEGACY_BURNING_FURNACE)
                             continue;
 
                         LinkedList<String> coOwners = new LinkedList<String>();
@@ -376,7 +376,7 @@ public class ChestLock extends JavaPlugin {
                         Block block = world.getBlockAt(x, y, z);
 
                         //Skip this data if the Block is not a Dispenser
-                        if (block.getTypeId() != 23)
+                        if (block.getType() != Material.DISPENSER)
                             continue;
 
                         LinkedList<String> coOwners = new LinkedList<String>();
@@ -423,16 +423,16 @@ public class ChestLock extends JavaPlugin {
 
                         //Skip this data if the Block is not a Door
                         switch (block.getType()) {
-                            case WOOD_DOOR: break;
-                            case WOODEN_DOOR: break;
+                            case LEGACY_WOOD_DOOR: break;
+                            case LEGACY_WOODEN_DOOR: break;
                             case IRON_DOOR: break;
-                            case IRON_DOOR_BLOCK: break;
-                            case TRAP_DOOR: break;
-                            case FENCE_GATE: break;
+                            case LEGACY_IRON_DOOR_BLOCK: break;
+                            case LEGACY_TRAP_DOOR: break;
+                            case LEGACY_FENCE_GATE: break;
                             default: continue;
                         }
 
-                        doors.add(new LockedDoor(owner, block, Integer.parseInt(split[4])));
+                        doors.add(new LockedDoor(owner, block, Material.getMaterial(split[4])));
                     }
                     catch (Exception corruptedData) {
                         /* Do not load this line */
@@ -482,13 +482,13 @@ public class ChestLock extends JavaPlugin {
                     //Create a LockedDoor if the Block is a door
                     Material material = block.getType();
                     switch (material) {
-                        case WOOD_DOOR: //Fall through
-                        case WOODEN_DOOR: //Fall through
+                        case LEGACY_WOOD_DOOR: //Fall through
+                        case LEGACY_WOODEN_DOOR: //Fall through
                         case IRON_DOOR: //Fall through
-                        case IRON_DOOR_BLOCK: //Fall through
-                        case TRAP_DOOR: //Fall through
-                        case FENCE_GATE:
-                            doors.add(new LockedDoor(owner, block, Integer.parseInt(split[5])));
+                        case LEGACY_IRON_DOOR_BLOCK: //Fall through
+                        case LEGACY_TRAP_DOOR: //Fall through
+                        case LEGACY_FENCE_GATE:
+                            doors.add(new LockedDoor(owner, block, Material.getMaterial(split[5])));
                             return;
                             
                         default: break;
@@ -529,7 +529,7 @@ public class ChestLock extends JavaPlugin {
                         case DISPENSER: dispensers.add(new Safe(owner, block, lockable, coOwners, groups)); break;
                         case CHEST: chests.add(new Safe(owner, block, lockable, coOwners, groups)); break;
                         case FURNACE: furnaces.add(new Safe(owner, block, lockable, coOwners, groups)); break;
-                        case BURNING_FURNACE: furnaces.add(new Safe(owner, block, lockable, coOwners, groups)); break;
+                        case LEGACY_BURNING_FURNACE: furnaces.add(new Safe(owner, block, lockable, coOwners, groups)); break;
                         
                         default:
                             System.err.println("[ChestLock] Invalid blocktype for "+line);
@@ -670,7 +670,7 @@ public class ChestLock extends JavaPlugin {
                         bWriter.write(block.getX()+";");
                         bWriter.write(block.getY()+";");
                         bWriter.write(block.getZ()+";");
-                        bWriter.write(door.key+";");
+                        bWriter.write(door.key.name()+";");
 
                         //Write each Door on its own line
                         bWriter.newLine();
@@ -783,7 +783,7 @@ public class ChestLock extends JavaPlugin {
                 //Return null because the block is not owned
                 return null;
                 
-            case BURNING_FURNACE:
+            case LEGACY_BURNING_FURNACE:E:
                 //Iterate through all Furnaces to find the one for the Block
                 for (Safe safe: furnaces)
                     if (safe.block.equals(block))
@@ -806,7 +806,7 @@ public class ChestLock extends JavaPlugin {
             case DISPENSER: dispensers.add(safe); break;
             case CHEST: chests.add(safe); break;
             case FURNACE: furnaces.add(safe); break;
-            case BURNING_FURNACE: furnaces.add(safe); break;
+            case LEGACY_BURNING_FURNACE:CE: furnaces.add(safe); break;
             default: return;
         }
         
@@ -823,7 +823,7 @@ public class ChestLock extends JavaPlugin {
             case DISPENSER: dispensers.remove(safe); break;
             case CHEST: chests.remove(safe); break;
             case FURNACE: furnaces.remove(safe); break;
-            case BURNING_FURNACE: furnaces.remove(safe); break;
+            case LEGACY_BURNING_FURNACE:URNACE: furnaces.remove(safe); break;
             default: return;
         }
         
@@ -855,12 +855,12 @@ public class ChestLock extends JavaPlugin {
     public static LockedDoor findDoor(Block block) {
         //Return null is the Block is not a Door
         switch (block.getType()) {
-            case WOOD_DOOR: break;
-            case WOODEN_DOOR: break;
+            case LEGACY_WOOD_DOOR:OOR: break;
+            case LEGACY_WOODEN_DOOR:R: break;
             case IRON_DOOR: break;
-            case IRON_DOOR_BLOCK: break;
-            case TRAP_DOOR: break;
-            case FENCE_GATE: break;
+            case LEGACY_IRON_DOOR_BLOCK:CK: break;
+            case LEGACY_TRAP_DOOR:OOR: break;
+            case LEGACY_FENCE_GATE:E: break;
             default: return null;
         }
         

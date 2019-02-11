@@ -60,7 +60,7 @@ public class ChestLockListener implements Listener {
             if (lockedDoor.hasKey(player)) {
                 switch (block.getType()) {
                     case IRON_DOOR: //Fall through
-                    case IRON_DOOR_BLOCK:
+                    case LEGACY_IRON_DOOR_BLOCK:
                         //Convert the Block to a Door
                         BlockState state = block.getState();
                         Door door = (Door)state.getData();
@@ -97,7 +97,7 @@ public class ChestLockListener implements Listener {
             case DISPENSER: break;
             case CHEST: break;
             case FURNACE: break;
-            case BURNING_FURNACE: break;
+            case LEGACY_BURNING_FURNACE: break;
             default: return;
         }
         
@@ -106,8 +106,8 @@ public class ChestLockListener implements Listener {
         if (type.startsWith("b"))
             type = "furnace";
         
-        int holding = player.getItemInHand().getTypeId();
-        
+        int holding = player.getItemInHand().getType().getId();
+
         Safe safe = ChestLock.findSafe(block);
         if (safe == null) { //Safe is unowned
             //Return if the Player right clicked the Safe
@@ -133,7 +133,7 @@ public class ChestLockListener implements Listener {
                     case DISPENSER: owned = ChestLock.getOwnedDispensers(player.getName()).size(); break;
                     case CHEST: owned = ChestLock.getOwnedChests(player.getName()).size(); break;
                     case FURNACE: owned = ChestLock.getOwnedFurnaces(player.getName()).size(); break;
-                    case BURNING_FURNACE: owned = ChestLock.getOwnedFurnaces(player.getName()).size(); break;
+                    case LEGACY_BURNING_FURNACE: owned = ChestLock.getOwnedFurnaces(player.getName()).size(); break;
                     default: return;
                 }
             
@@ -268,12 +268,12 @@ public class ChestLockListener implements Listener {
             return;
         
         //Return if the key is unlockable
-        if (lockedDoor.key == 0)
+        if (lockedDoor.key.getId() == 0)
             return;
         
         switch (lockedDoor.block.getType()) {
-            case TRAP_DOOR: event.setNewCurrent(event.getOldCurrent()); break;
-            case FENCE_GATE: break;
+            case LEGACY_TRAP_DOOR: event.setNewCurrent(event.getOldCurrent()); break;
+            case LEGACY_FENCE_GATE: break;
             default:
                 //Allow Redstone to close a Door but not open it
                 if (!((Door)lockedDoor.block.getState().getData()).isOpen())

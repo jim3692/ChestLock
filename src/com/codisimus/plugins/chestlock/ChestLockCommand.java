@@ -261,7 +261,7 @@ public class ChestLockCommand implements CommandExecutor {
                 
                 //Display the location of each Dispenser
                 for (LockedDoor door: ownedDoors)
-                    player.sendMessage(", Key: "+Material.getMaterial(door.key).name()+" @"+getLocation(door.block));
+                    player.sendMessage(", Key: "+door.key.name()+" @"+getLocation(door.block));
                 
                 //Do not send the message if it is blank
                 if (!doorMsg.isEmpty())
@@ -459,17 +459,17 @@ public class ChestLockCommand implements CommandExecutor {
         //Display Help Page if the Block is not a Door
         Block block = player.getTargetBlock(TRANSPARENT, 10);
         switch (block.getType()) {
-            case WOOD_DOOR: break;
-            case WOODEN_DOOR: break;
+            case LEGACY_WOOD_DOOR: break;
+            case LEGACY_WOODEN_DOOR: break;
             case IRON_DOOR: break;
-            case IRON_DOOR_BLOCK: break;
-            case TRAP_DOOR: break;
-            case FENCE_GATE: break;
+            case LEGACY_IRON_DOOR_BLOCK: break;
+            case LEGACY_TRAP_DOOR: break;
+            case LEGACY_FENCE_GATE: break;
             default: sendHelp(player); return;
         }
         
         ItemStack item = player.getItemInHand();
-        int id = item.getTypeId();
+        Material id = item.getType();
         LockedDoor door = ChestLock.findDoor(block);
         
         //If the Door is not owned, give ownership to the Player
@@ -490,7 +490,7 @@ public class ChestLockCommand implements CommandExecutor {
         else
             door.key = id;
 
-        if (id == 0)
+        if (id.getId() == 0)
             player.sendMessage(ChestLockMessages.getUnlockableMsg(block.getType()));
         else
             player.sendMessage(ChestLockMessages.getKeySetMsg(item.getType()));
@@ -521,7 +521,7 @@ public class ChestLockCommand implements CommandExecutor {
     /**
      * Returns the location of a given block in the form of a string
      * 
-     * @param The Block whose location will be returned
+     * @param block The Block whose location will be returned
      * @return The location of a given block
      */
     public static String getLocation(Block block) {

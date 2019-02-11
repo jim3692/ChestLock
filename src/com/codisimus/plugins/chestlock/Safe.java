@@ -21,7 +21,7 @@ public class Safe {
      * Constructs a new Safe
      * 
      * @param owner The name of the Owner of the Safe
-     * @param safe The Block of the Safe
+     * @param block The Block of the Safe
      * @param lockable The boolean value of whether the Safe is lockable
      * @param coOwners The list of the CoOwners of the Safe
      * @param groups The list of the CoOwner groups of the Safe
@@ -38,7 +38,7 @@ public class Safe {
      * Constructs a new Safe
      * 
      * @param owner The name of the Owner of the Safe
-     * @param safe The Block of the Safe
+     * @param block The Block of the Safe
      */
     public Safe(String owner, Block block) {
         this.owner = owner;
@@ -49,12 +49,12 @@ public class Safe {
      * Returns whether the given Block is left or right of the Safe Block
      * Will only return true is both the Block and the Safe are Chests
      * 
-     * @param block The Block of the Safe
+     * @param block2 The Block of the Safe
      * @return true if the given Block is left or right of the Safe Block
      */
     public boolean isNeighbor(Block block2) {
         //Return false if either block is not a Chest
-        if (block.getTypeId() != 54 || block2.getTypeId() != 54)
+        if (block.getType().getId() != 54 || block2.getType().getId() != 54)
             return false;
         
         //Return false if Blocks are not in the same y-axis

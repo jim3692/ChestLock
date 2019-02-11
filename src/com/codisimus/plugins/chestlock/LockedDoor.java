@@ -1,5 +1,6 @@
 package com.codisimus.plugins.chestlock;
 
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
@@ -11,7 +12,7 @@ import org.bukkit.entity.Player;
 public class LockedDoor {
     public Block block;
     public String owner;
-    public int key;
+    public Material key;
 
     /**
      * Constructs a new LockedDoor
@@ -20,7 +21,7 @@ public class LockedDoor {
      * @param block The Block of the Door
      * @param key The item which must be in the Player's hand to open the Door
      */
-    public LockedDoor(String owner, Block block, int key) {
+    public LockedDoor(String owner, Block block, Material key) {
         this.owner = owner;
         this.block = block;
         this.key = key;
@@ -29,16 +30,16 @@ public class LockedDoor {
     /**
      * Returns whether the given Block is above or below the door Block
      * 
-     * @param check The Block of the door
+     * @param block2 check The Block of the door
      * @return true if the given Block is above or below the door Block
      */
     public boolean isNeighbor(Block block2) {
         //Return false if the block is not a Door
         switch (block.getType()) {
-            case WOOD_DOOR: break;
-            case WOODEN_DOOR: break;
+            case LEGACY_WOOD_DOOR: break;
+            case LEGACY_WOODEN_DOOR: break;
             case IRON_DOOR: break;
-            case IRON_DOOR_BLOCK: break;
+            case LEGACY_IRON_DOOR_BLOCK: break;
             default: return false;
         }
         
@@ -69,13 +70,13 @@ public class LockedDoor {
      */
     public boolean hasKey(Player player) {
         //Return true if the door is unlockable
-        if (key == 0)
+        if (key.getId() == 0)
             return true;
         
-        int holding = player.getItemInHand().getTypeId();
+        int holding = player.getItemInHand().getType().getId();
         
         //Return true if the Player is holding the key
-        if (holding == key)
+        if (holding == key.getId())
             return true;
         
         //Return true if the Player is an admin and holding the global key
